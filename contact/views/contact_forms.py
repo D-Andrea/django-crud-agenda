@@ -1,18 +1,27 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django import forms
+
 from contact.models import Contact
 
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = (
+            'first_name',
+            'last_name',
+            'phone',
+        )
 
 # Create your views here.
-def index(request):
-
+def create(request):
     context = {
-        
+        'form': ContactForm()
     }
 
     return render(
         request,
-        'contact/index.html',
+        'contact/create.html',
         context
     )
