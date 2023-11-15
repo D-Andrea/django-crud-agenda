@@ -5,6 +5,7 @@ from django import forms
 
 from contact.models import Contact
 
+
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
@@ -14,8 +15,20 @@ class ContactForm(forms.ModelForm):
             'phone',
         )
 
+
 # Create your views here.
 def create(request):
+    if request.method == "POST":
+        context = {
+            'form': ContactForm(request.POST)
+        }
+
+        return render(
+            request,
+            'contact/create.html',
+            context
+        )
+
     context = {
         'form': ContactForm()
     }
@@ -25,3 +38,4 @@ def create(request):
         'contact/create.html',
         context
     )
+
