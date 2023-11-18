@@ -1,29 +1,19 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from . import models
 
 
 class ContactForm(forms.ModelForm):
-    first_name = forms.CharField(
-        widget=forms.TextInput(
+    picture = forms.ImageField(
+        widget=forms.FileInput(
             attrs={
-                'class': 'class-a class-b',
-                'placeholder': 'Write Here',
-            },
-        ),
-        label='First Name',
-        help_text='Text to help the user'
+                'accept': 'image/*'
+            }
+        )
     )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # Just updating the current widget
-        # self.fields['first_name'].widget.attrs.update({
-        #     'class': 'class-a class-b',
-        #     'placeholder': 'Write Here',
-        # })
 
     class Meta:
         model = models.Contact
@@ -34,15 +24,8 @@ class ContactForm(forms.ModelForm):
             'email',
             'description',
             'category',
+            'picture',
         )
-        # widgets = {
-        #     'first_name': forms.TextInput(
-        #         attrs={
-        #             'class': 'class-a class-b',
-        #             'placeholder': 'Write Here'
-        #         }
-        #     )
-        # }
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -51,9 +34,9 @@ class ContactForm(forms.ModelForm):
 
         if first_name == last_name:
             msg = ValidationError(
-                    "The first name can't be the same as the last",
-                    code='invalid '
-                )
+                "The first name can't be the same as the last",
+                code='invalid '
+            )
             self.add_error('first_name', msg)
             self.add_error('last_name', msg)
 
@@ -72,3 +55,33 @@ class ContactForm(forms.ModelForm):
             )
 
         return first_name
+
+
+class RegisterForm(UserCreationForm):
+    first_name = forms.CharField(
+        required=True,
+        min_length=3,
+    )
+    last_name = forms.CharField(
+        required=True,
+        min_length=3,
+    )
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = (
+            'first_name', 'last_name', 'email',
+            'username', 'password1', 'password2',
+        )
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if User.objects.filter(email=email).exists():
+            self.add_error(
+                'email',
+                ValidationError('This email is already registered.', code='invalid')
+            )
+
+        return email

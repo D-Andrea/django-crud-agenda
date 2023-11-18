@@ -7,6 +7,7 @@ from random import choice
 import django
 from django.conf import settings
 
+
 DJANGO_BASE_DIR = Path(__file__).parent.parent
 NUMBER_OF_OBJECTS = 1000
 
@@ -15,6 +16,8 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
 settings.USE_TZ = False
 
 django.setup()
+
+# RUN THIS SCRIPT DIRECTLY TO FILL THE DATABASE WITH RANDOM INFORMATION
 
 if __name__ == '__main__':
     import faker

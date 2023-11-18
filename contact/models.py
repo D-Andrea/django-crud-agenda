@@ -36,5 +36,5 @@ class Contact(models.Model):
         blank=True, null=True
     )
 
-    def __str__(self) -> str:  # This will display the name of the contact in the list by grabbing it's information
+    def __str__(self) -> str:  # This will display the name of the contact in the list by grabbing its information
         return f'{self.first_name} {self.last_name}'
