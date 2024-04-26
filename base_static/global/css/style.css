@@ -1,7 +1,7 @@
 :root {
   --spacing: 1.5rem;
   --link-dark-color: rgb(0, 83, 134);
-  --link-light-color: rgb(156, 217, 255);
+  --link-light-color: rgb(255, 255, 255);
   --clr-white: rgb(245, 245, 255);
   --clr-black: rgb(0, 0, 30);
   --clr-light-gray: rgb(230, 230, 245);
@@ -55,11 +55,28 @@ svg {
 }
 
 .header {
-  background: var(--clr-black);
   padding: var(--spacing);
   box-shadow: 0 5px 10px 2px var(--clr-dark-shadow-20);
   z-index: 1;
   position: relative;
+  overflow: hidden;
+  transform: scale(1);
+  isolation: isolate;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  top: -5%;
+  right: -5%;
+  bottom: -5%;
+  left: -5%;
+  background-image: url('https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  filter: blur(10px);
+  z-index: -1;
 }
 
 .header-heading {
@@ -70,11 +87,11 @@ svg {
 .header-link {
   color: var(--link-light-color);
   text-decoration: none;
-  transition: filter var(--transition-fast) ease-in-out;
+  transition: color 0.3s ease;
 }
 
 .header-link:hover {
-  filter: brightness(70%);
+  color: var(--link-dark-color)
 }
 
 .menu {
